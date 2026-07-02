@@ -2,7 +2,11 @@
 package de.johni0702.minecraft.gui.versions.mixin;
 
 import de.johni0702.minecraft.gui.versions.callbacks.RenderHudCallback;
+//#if MC>=260200
+//$$ import net.minecraft.client.gui.Hud;
+//#else
 import net.minecraft.client.gui.hud.InGameHud;
+//#endif
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,7 +23,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.util.math.MatrixStack;
 //#endif
 
+//#if MC>=260200
+//$$ @Mixin(Hud.class)
+//#else
 @Mixin(InGameHud.class)
+//#endif
 public class Mixin_RenderHudCallback {
     @Inject(
             //#if MC>=12005 && MC<12106
@@ -27,7 +35,9 @@ public class Mixin_RenderHudCallback {
             //#else
             method = "render",
             //#endif
-            //#if MC>=12109
+            //#if MC>=260200
+            //$$ at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Hud;extractDemoOverlay(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/client/DeltaTracker;)V")
+            //#elseif MC>=12109
             //$$ at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderDemoTimer(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V")
             //#elseif MC>=12106
             //$$ at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderDebugHud(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V")
