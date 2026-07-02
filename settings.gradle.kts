@@ -14,6 +14,9 @@ pluginManagement {
         id("gg.essential.multi-version.root") version "0.7.0-alpha.4"
     }
 }
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
 
 rootProject.name = "jGui"
 rootProject.buildFileName = "root.gradle.kts"
@@ -21,13 +24,13 @@ rootProject.buildFileName = "root.gradle.kts"
 listOf(
         // "1.7.10",
         // "1.8",
-        "1.8.9",
-        "1.9.4",
-        "1.12",
-        "1.14.4-forge",
-        "1.14.4",
-        "1.15.2",
-        "1.16.1",
+        // "1.8.9",
+        // "1.9.4",
+        // "1.12",
+        // "1.14.4-forge",
+        // "1.14.4",
+        // "1.15.2",
+        // "1.16.1",
         "1.16.4",
         "1.17.1",
         "1.18.1",
@@ -49,6 +52,7 @@ listOf(
         "1.21.10",
         "1.21.11",
         "26.1",
+        "26.2",
 ).forEach { version ->
     include(":$version")
     project(":$version").apply {
