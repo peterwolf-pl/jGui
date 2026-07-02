@@ -99,7 +99,11 @@ public class VanillaGuiScreen extends GuiScreen implements Draggable, KeyHandler
     }
 
     public void display() {
+        //#if MC>=260200
+        //$$ getMinecraft().setScreenAndShow(mcScreen);
+        //#else
         getMinecraft().openScreen(mcScreen);
+        //#endif
         register();
     }
 
@@ -176,9 +180,15 @@ public class VanillaGuiScreen extends GuiScreen implements Draggable, KeyHandler
         // TODO this is a workaround for ReplayMod#560 until we remove the inner mc screen
         //      see also the note in ReplayMod's GuiBackgroundProcesses
         // If this screen ever becomes the main screen, something has gone wrong.
+        //#if MC>=260200
+        //$$ if (getSuperMcGui() == getMinecraft().gui.screen()) {
+        //$$     getMinecraft().setScreenAndShow(null);
+        //$$ }
+        //#else
         if (getSuperMcGui() == getMinecraft().currentScreen) {
             getMinecraft().openScreen(null);
         }
+        //#endif
     }
 
     // Used when wrapping an already existing mc.GuiScreen

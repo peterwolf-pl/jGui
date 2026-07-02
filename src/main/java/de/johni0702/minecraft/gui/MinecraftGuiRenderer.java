@@ -36,7 +36,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.BufferBuilder;
+//#if MC<12106
 import net.minecraft.client.render.Tessellator;
+//#endif
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -52,7 +54,12 @@ import org.lwjgl.opengl.GL11;
 //$$ import com.mojang.blaze3d.systems.RenderPass;
 //$$ import com.mojang.blaze3d.textures.GpuTexture;
 //$$ import com.mojang.blaze3d.pipeline.RenderPipeline;
+//#if MC>=260200
+//$$ import com.mojang.blaze3d.GpuFormat;
+//$$ import com.mojang.blaze3d.opengl.FrameBufferCache;
+//#else
 //$$ import com.mojang.blaze3d.textures.TextureFormat;
+//#endif
 //$$ import net.minecraft.client.gl.Framebuffer;
 //$$ import net.minecraft.client.gl.RenderPipelines;
 //$$ import net.minecraft.client.texture.GlTexture;
@@ -69,7 +76,9 @@ import org.lwjgl.opengl.GL11;
 //#if MC>=12100
 //$$ import net.minecraft.client.render.RenderLayer;
 //$$ import net.minecraft.client.render.VertexConsumer;
+//#if MC<260200
 //$$ import net.minecraft.client.render.VertexConsumerProvider;
+//#endif
 //#endif
 
 //#if MC>=12000
@@ -77,7 +86,9 @@ import org.lwjgl.opengl.GL11;
 //#if MC<12105
 //$$ import net.minecraft.client.render.BufferRenderer;
 //#endif
+//#if MC<12106
 //$$ import net.minecraft.client.render.Tessellator;
+//#endif
 //$$ import net.minecraft.client.render.VertexFormats;
 //$$ import org.joml.Matrix4f;
 //#endif
@@ -213,7 +224,11 @@ public class MinecraftGuiRenderer implements GuiRenderer {
         boundTexture = null;
         //#if MC>=12105
         //#if MC>=12106
+        //#if MC>=260200
+        //$$ boundTextureGpu = new GlTexture(GlTexture.USAGE_TEXTURE_BINDING, null, GpuFormat.RGBA8_UNORM, 0, 0, 0, 1, glId, new FrameBufferCache()) {
+        //#else
         //$$ boundTextureGpu = new GlTexture(GlTexture.USAGE_TEXTURE_BINDING, null, TextureFormat.RGBA8, 0, 0, 0, 1, glId) {
+        //#endif
         //#else
         //$$ boundTextureGpu = new GlTexture(null, TextureFormat.RGBA8, 0, 0, 0, glId) {
         //#endif
@@ -404,6 +419,9 @@ public class MinecraftGuiRenderer implements GuiRenderer {
         //#endif
 
         //#if MC>=12100
+        //#if MC>=260200
+        //$$ context.fillGradient(x, y, x + width, y + height, color(tl), color(bl));
+        //#else
         //$$ VertexConsumerProvider.Immediate provider = getMinecraft().getBufferBuilders().getEntityVertexConsumers();
         //$$ VertexConsumer vertexConsumer = provider.getBuffer(highlight ? RenderLayer.getGuiTextHighlight() : RenderLayer.getGui());
         //$$ vertexConsumer.vertex(x, y + height, 0).color(bl.getRed(), bl.getGreen(), bl.getBlue(), bl.getAlpha());
@@ -411,6 +429,7 @@ public class MinecraftGuiRenderer implements GuiRenderer {
         //$$ vertexConsumer.vertex(x + width, y, 0).color(tr.getRed(), tr.getGreen(), tr.getBlue(), tr.getAlpha());
         //$$ vertexConsumer.vertex(x, y, 0).color(tl.getRed(), tl.getGreen(), tl.getBlue(), tl.getAlpha());
         //$$ provider.draw();
+        //#endif
         //#else
         //#if MC>=10800
         Tessellator tessellator = Tessellator.getInstance();
